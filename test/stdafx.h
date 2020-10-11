@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QIntValidator>
+#include <QDesktopWidget>
 
 extern ConnectMysql* connSQL;
 extern UserNow* userToken;

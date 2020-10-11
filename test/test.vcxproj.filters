@@ -118,10 +118,36 @@
     <Image Include="用户.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="conLab.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="文凭.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ComLabSys.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lightBlue.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="base.css">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

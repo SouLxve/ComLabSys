@@ -8,11 +8,16 @@ AdminWindow::AdminWindow(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	this->setWindowState(Qt::WindowMaximized);
+	setFixedSize(1500, 900);
 	this->setWindowTitle("机房预约管理系统（管理员）");
 	getType();
 	setMainPage();
 	ui.ordernumBox->setValidator(new QIntValidator(0, 100, this));
+	ui.timetableFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.userFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.frame_2->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.myappointFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.doappointFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
 	timer->setInterval(5000);
 	//ADD();
 	connect(ui.logoutButton, &QPushButton::clicked, this, &AdminWindow::on_logout_clicked);
@@ -44,10 +49,19 @@ void AdminWindow::setMainPage() {
 	ui.premissionLine->setText(QString::number(userToken->getPermission()));
 	ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 	ui.tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.tableWidget->setShowGrid(false);
+	ui.tableWidget->setFocusPolicy(Qt::NoFocus);
+	ui.tableWidget->verticalHeader()->setMinimumSectionSize(60);
 	ui.appointTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
-	ui.appointTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	//ui.appointTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.appointTable->verticalHeader()->setDefaultSectionSize(60);
+	ui.appointTable->setShowGrid(false);
+	ui.appointTable->setFocusPolicy(Qt::NoFocus);
 	ui.labTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 	ui.labTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.labTable->verticalHeader()->setMinimumSectionSize(60);
+	ui.labTable->setShowGrid(false);
+	ui.labTable->setFocusPolicy(Qt::NoFocus);
 	appointView();
 	labView();
 	initBoxs();
@@ -110,12 +124,20 @@ void AdminWindow::appointView() {
 				ui.appointTable->setItem(row, 7, new QTableWidgetItem(QString::fromStdString(res->getString(7).c_str())));
 				ui.appointTable->item(row, 7)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 				agree = new QPushButton();
-				agree->setText("同意");
+				//agree->setText("同意");
+				agree->setIcon(QIcon::fromTheme("folder", QIcon(":/login/select-bold.png")));
+				agree->setIconSize(QSize(24, 24));
+				agree->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+				agree->setFixedSize(48, 48);
 				if (sta[i] == 3) {
 					agree->setEnabled(false);
 				}
 				disagree = new QPushButton();
-				disagree->setText("拒绝");
+				//disagree->setText("拒绝");
+				disagree->setIcon(QIcon::fromTheme("folder", QIcon(":/login/close-bold.png")));
+				disagree->setIconSize(QSize(24, 24));
+				disagree->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+				disagree->setFixedSize(48, 48);
 				if (sta[i] == 2) {
 					disagree->setEnabled(false);
 				}
@@ -149,9 +171,19 @@ void AdminWindow::labView() {
 		ui.labTable->item(row, 2)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);//元素居中
 		ui.labTable->item(row, 2)->setFlags(ui.labTable->item(row, 2)->flags() & (~Qt::ItemIsEditable));
 		this->room_ids[row] = res->getInt(4);
+		QWidget* widget = new QWidget;
+		QHBoxLayout* layout = new QHBoxLayout;
 		change = new QPushButton();
-		ui.labTable->setCellWidget(row, 3, change);
-		change->setText("修改");
+		//change->setText("修改");
+		change->setIcon(QIcon::fromTheme("folder", QIcon(":/login/edit.png")));
+		change->setIconSize(QSize(24, 24));
+		change->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		change->setFixedSize(48, 48);
+		layout->addWidget(change);
+		layout->setMargin(0);
+		layout->setAlignment(change, Qt::AlignCenter);
+		widget->setLayout(layout);
+		ui.labTable->setCellWidget(row, 3, widget);
 		connect(change, &QPushButton::clicked, this, &AdminWindow::on_change_clicked);
 	}
 }

@@ -1,4 +1,18 @@
 <RCC>
-    <qresource prefix="login">
+    <qresource prefix="/login">
+        <file>lightBlue.css</file>
+        <file>base.css</file>
+        <file>modify.png</file>
+        <file>edit.png</file>
+        <file>ashbin.png</file>
+        <file>close-bold.png</file>
+        <file>select-bold.png</file>
+        <file>down.png</file>
+        <file>up.png</file>
+        <file>arrow-down.png</file>
+        <file>arrow-down_1.png</file>
+        <file>arrow-up.png</file>
+        <file>back.png</file>
+        <file>icon.png</file>
     </qresource>
 </RCC>

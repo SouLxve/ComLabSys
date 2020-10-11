@@ -58,6 +58,15 @@
       <AdditionalDependencies>mysqlcppconn.lib;mysqlcppconn8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.\GeneratedFiles\$(ConfigurationName);D:\MySQL\Connector C++ 8.0\include;D:\boost_1_74_0\boost_1_74_0;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>D:\boost_1_74_0\boost_1_74_0\bin.v2\libs;D:\MySQL\Connector C++ 8.0\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;mysqlcppconn8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
     <QtModules>core;gui;sql;widgets</QtModules>
@@ -89,7 +98,7 @@
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -139,10 +148,20 @@
     <QtMoc Include="Register.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="conLab.png" />
+    <Image Include="down.png" />
+    <Image Include="icon.png" />
+    <Image Include="icon1.ico" />
+    <Image Include="up.png" />
+    <Image Include="文凭.png" />
     <Image Include="用户.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ComLabSys.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="base.css" />
+    <None Include="lightBlue.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

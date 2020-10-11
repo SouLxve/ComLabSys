@@ -12,10 +12,13 @@ Admin0Window::Admin0Window(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	setFixedSize(1500, 900);
 	this->setWindowState(Qt::WindowMaximized);
 	this->setWindowTitle("机房预约管理系统（超级管理员）");
 	ui.tabWidget->setCurrentIndex(0);
 	ui.weeknumEdit->setValidator(new QIntValidator(1, 100, this));
+	ui.frame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.frame_2->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
 	setMainPage();
 	connect(ui.logoutButton, &QPushButton::clicked, this, &Admin0Window::on_logout_clicked);
 	connect(ui.submitButton, &QPushButton::clicked, this, &Admin0Window::on_submit_clicked);
@@ -124,13 +127,25 @@ void Admin0Window::setMainPage() {
 		ui.tableWidget->item(i, 3)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		ui.tableWidget->setItem(i, 4, new QTableWidgetItem(email));
 		ui.tableWidget->item(i, 4)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+		QWidget* widget = new QWidget;
+		QHBoxLayout* layout = new QHBoxLayout;
 		change = new QPushButton();
-		ui.tableWidget->setCellWidget(i, 5, change);
+		change->setIcon(QIcon::fromTheme("folder", QIcon(":/login/edit.png")));
+		change->setIconSize(QSize(24, 24));
+		change->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		layout->addWidget(change);
+		layout->setMargin(0);
+		layout->setAlignment(change, Qt::AlignCenter);
+		widget->setLayout(layout);
+		ui.tableWidget->setCellWidget(i, 5, widget);
 		connect(change, &QPushButton::clicked, this, &Admin0Window::on_change_clicked);
 	}
 	ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);   //禁止编辑
 	ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);     //均分各列
 	ui.tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.tableWidget->verticalHeader()->setMinimumSectionSize(60);//最小行高
+	ui.tableWidget->setShowGrid(false);
+	ui.tableWidget->setFocusPolicy(Qt::NoFocus);
 }
 
 void Admin0Window::setUserPage(string name, string phone, string email, int perm) {
@@ -158,13 +173,12 @@ void Admin0Window::setUserPage(string name, string phone, string email, int perm
 }
 
 void Admin0Window::on_change_clicked() {
-	QPushButton* senderObj = qobject_cast<QPushButton*>(sender());
-	if (senderObj == 0)
-	{
-		return;
-	}
-	QModelIndex index = ui.tableWidget->indexAt(QPoint(senderObj->frameGeometry().x(), senderObj->frameGeometry().y()));
-	row = index.row();
+	QPushButton* btn = (QPushButton*)sender();
+	QWidget* w_parent = (QWidget*)btn->parent();
+	int x = w_parent->mapToParent(QPoint(0, 0)).x();
+	int y = w_parent->mapToParent(QPoint(0, 0)).y();
+	QModelIndex index = ui.tableWidget->indexAt(QPoint(x, y));
+	int row = index.row();
 	setUserPage(ui.tableWidget->item(row, 1)->text().toStdString(), ui.tableWidget->item(row, 3)->text().toStdString(), ui.tableWidget->item(row, 4)->text().toStdString(), ui.tableWidget->item(row, 2)->text().toInt());
 }
 
@@ -189,9 +203,15 @@ void Admin0Window::showLabRoom() {
 		ui.tableWidget_2->setItem(row, 3, new QTableWidgetItem(QString::number(res->getInt(4))));
 		ui.tableWidget_2->item(row, 3)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);//元素居中
 		modify = new QPushButton();
-		modify->setText("修改");
+		modify->setIcon(QIcon::fromTheme("folder", QIcon(":/login/edit.png")));
+		modify->setIconSize(QSize(24, 24));
+		modify->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		//modify->setText("修改");
 		del = new QPushButton();
-		del->setText("删除");
+		del->setIcon(QIcon::fromTheme("folder", QIcon(":/login/ashbin.png")));
+		del->setIconSize(QSize(24, 24));
+		del->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		//del->setText("删除");
 		tmp_widget = new QWidget();
 		tmp_layout = new QHBoxLayout(tmp_widget);
 		tmp_layout->addWidget(modify);
@@ -219,9 +239,17 @@ void Admin0Window::showLabType() {
 		ui.tableWidget_3->item(row, 1)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);//元素居中
 		ui.tableWidget_3->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(res->getString(3).c_str())));
 		ui.tableWidget_3->item(row, 2)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);//元素居中
+		QWidget* widget = new QWidget;
+		QHBoxLayout* layout = new QHBoxLayout;
 		change = new QPushButton();
-		ui.tableWidget_3->setCellWidget(row, 3, change);
-		change->setText("修改");
+		change->setIcon(QIcon::fromTheme("folder", QIcon(":/login/edit.png")));
+		change->setIconSize(QSize(24, 24));
+		change->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		layout->addWidget(change);
+		layout->setMargin(0);
+		layout->setAlignment(change, Qt::AlignCenter);
+		widget->setLayout(layout);
+		ui.tableWidget_3->setCellWidget(row, 3, widget);
 		connect(change, &QPushButton::clicked, this, &Admin0Window::on_modify2_clicked);
 	}
 }
@@ -327,7 +355,7 @@ void Admin0Window::on_del_clicked() {
 		int updateCount = connSQL->updateMessage(query);
 		if (updateCount > 0) {
 			QMessageBox::information(this, "提示", "删除成功", QMessageBox::Ok);
-			for (int i = 0; i < 7; i++) {
+			/*for (int i = 0; i < 7; i++) {
 				sprintf(query, "delete from %s where room_id=%d", weekdays[i].c_str(), room_id);
 				updateCount = connSQL->updateMessage(query);
 				if (updateCount > 0) {
@@ -336,7 +364,7 @@ void Admin0Window::on_del_clicked() {
 				else {
 					QMessageBox::information(this, "提示", "发生了未知的错误", QMessageBox::Ok);
 				}
-			}
+			}*/
 		}
 		else {
 			QMessageBox::information(this, "提示", "删除失败", QMessageBox::Ok);
@@ -346,12 +374,11 @@ void Admin0Window::on_del_clicked() {
 }
 
 void Admin0Window::on_modify2_clicked() {
-	QPushButton* senderObj = qobject_cast<QPushButton*>(sender());
-	if (senderObj == 0)
-	{
-		return;
-	}
-	QModelIndex index = ui.tableWidget_3->indexAt(QPoint(senderObj->frameGeometry().x(), senderObj->frameGeometry().y()));
+	QPushButton* btn = (QPushButton*)sender();
+	QWidget* w_parent = (QWidget*)btn->parent();
+	int x = w_parent->mapToParent(QPoint(0, 0)).x();
+	int y = w_parent->mapToParent(QPoint(0, 0)).y();
+	QModelIndex index = ui.tableWidget_3->indexAt(QPoint(x, y));
 	int row = index.row();
 	string teacher = ui.tableWidget_3->item(row, 2)->text().toStdString();
 	string type = ui.tableWidget_3->item(row, 1)->text().toStdString();
@@ -375,11 +402,18 @@ void Admin0Window::on_modify2_clicked() {
 }
 
 void Admin0Window::on_tab_changed() {
+	ui.labtypeBox->clear();
 	if (ui.tabWidget->currentIndex() == 1) {
 		ui.tableWidget_2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 		ui.tableWidget_2->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+		ui.tableWidget_2->verticalHeader()->setMinimumSectionSize(60);//最小行高
+		ui.tableWidget_2->setShowGrid(false);
+		ui.tableWidget_2->setFocusPolicy(Qt::NoFocus);
 		ui.tableWidget_3->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 		ui.tableWidget_3->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+		ui.tableWidget_3->verticalHeader()->setMinimumSectionSize(60);//最小行高
+		ui.tableWidget_3->setShowGrid(false);
+		ui.tableWidget_3->setFocusPolicy(Qt::NoFocus);
 		showLabRoom();
 		showLabType();
 		char query[255];
@@ -426,6 +460,9 @@ void Admin0Window::on_addlab_clicked() {
 		}
 	}
 	QMessageBox::information(this, "提示", "添加完成", QMessageBox::Ok);
+	ui.labnameEdit->clear();
+	ui.labnumEdit->clear();
+	ui.labtypeBox->setCurrentIndex(-1);
 	showLabRoom();
 }
 

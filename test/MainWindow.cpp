@@ -8,10 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	setFixedSize(1500, 900);
 	this->setWindowState(Qt::WindowMaximized);
 	this->setWindowTitle("机房预约管理系统");
 	ui.appointnumberBox->setValidator(new QIntValidator(0, 100, this));
 	ui.tabWidget->setCurrentIndex(0);
+	ui.userFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.doappointFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
+	ui.myappointFrame->setStyleSheet("QFrame{ background: #eaeaea;border-radius: 12px;}");
 	timer->setInterval(5000);
 	setMainPage();
 	connect(ui.logoutButton, &QPushButton::clicked, this, &MainWindow::on_logout_clicked);
@@ -330,10 +334,18 @@ void MainWindow::setMainPage() {
 	ui.premissionLine->setText(QString::number(userToken->getPermission()));
 	ui.labTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 	ui.labTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.labTable->setShowGrid(false);
+	ui.labTable->setFocusPolicy(Qt::NoFocus);
 	ui.lessonTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
 	ui.lessonTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.lessonTable->setShowGrid(false);
+	ui.lessonTable->setFocusPolicy(Qt::NoFocus);
+	ui.appointTable->verticalHeader()->setMinimumSectionSize(60);
 	ui.appointTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配列宽
-	ui.appointTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	//ui.appointTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);//平均分配行宽
+	ui.appointTable->verticalHeader()->setDefaultSectionSize(60);
+	ui.appointTable->setShowGrid(false);
+	ui.appointTable->setFocusPolicy(Qt::NoFocus);
 	initBoxs();//初始化下拉框
 	appointView(); 
 	on_clear_clicked();
@@ -424,12 +436,20 @@ void MainWindow::appointView() {
 		ui.appointTable->setItem(row, 6, new QTableWidgetItem(QString::fromStdString(res->getString(6).c_str())));
 		ui.appointTable->item(row, 6)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		change = new QPushButton();
-		change->setText("修改");
+		//change->setText("修改");
+		change->setIcon(QIcon::fromTheme("folder", QIcon(":/login/edit.png")));
+		change->setIconSize(QSize(24, 24));
+		change->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		change->setFixedSize(48, 48);
 		if (res->getInt(9) == 3) {
 			change->setEnabled(false);
 		}
 		del = new QPushButton();
-		del->setText("撤销");
+		//del->setText("撤销");
+		del->setIcon(QIcon::fromTheme("folder", QIcon(":/login/close-bold.png")));
+		del->setIconSize(QSize(24, 24));
+		del->setStyleSheet("QPushButton{min-width:32px;max-width:32px;min-height:32px;max-height:32px;border: none; background-color:transparent;}QPushButton:hover{background-color:#dcdcdc;}QPushButton:pressed{background-color:#c5c5c5;}");
+		del->setFixedSize(48, 48);
 		tmp_widget = new QWidget();
 		tmp_layout = new QHBoxLayout(tmp_widget);
 		tmp_layout->addWidget(change);

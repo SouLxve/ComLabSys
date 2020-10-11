@@ -8,6 +8,7 @@ Register::Register(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	setFixedSize(500, 400);
 	connect(ui.submitButton, &QPushButton::clicked, this, &Register::on_submit_clicked);
 	connect(ui.returnButton, &QPushButton::clicked, this, &Register::on_return_clicked);
 }
